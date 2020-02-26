@@ -317,4 +317,23 @@
         </plugins>
     </reporting>
 
+    <repositories>
+        <repository>
+            <id>spring-releases</id>
+            <name>Spring Releases</name>
+            <url>https://repo.spring.io/libs-release</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+        <repository><!-- For current MulTEx: -->
+            <id>bht-knabe-repository</id>
+            <name>BHT Knabe Maven 2 repository</name>
+            <url>http://public.beuth-hochschule.de/~knabe/mvn-repo/</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+
 </project>
