@@ -107,6 +107,135 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
+            <!-- Disable Maven Compiler Plugin for production sources following https://stackoverflow.com/questions/14614446/how-do-i-disable-the-maven-compiler-plugin -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>default-compile</id>
+                        <phase>none</phase>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- Use AspectJ Maven Plugin instead for compiling production sources
+                following http://www.mojohaus.org/aspectj-maven-plugin/usage.html -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>aspectj-maven-plugin</artifactId>
+                <version>1.10</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>compile</goal>       <!-- use this goal to weave all your main classes -->
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <complianceLevel>${java.version}</complianceLevel>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                    <aspectLibraries>
+                        <aspectLibrary>
+                            <groupId>org.springframework</groupId>
+                            <artifactId>spring-aspects</artifactId>
+                        </aspectLibrary>
+                    </aspectLibraries>
+                </configuration>
+                <dependencies>
+                    <!-- Avoid AspectJ version clashes between 1.8.9 and 1.8.10 following
+                        https://stackoverflow.com/questions/41646801/maven-aspectj-weaving-for-java8 -->
+                    <dependency>
+                        <groupId>org.aspectj</groupId>
+                        <artifactId>aspectjweaver</artifactId>
+                        <version>${aspectj.version}</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <!-- Here used for extraction of exception message texts in the reference
+                            language from the exception Javadoc comments. -->
+                        <goals>
+                            <goal>javadoc</goal>
+                        </goals>
+                        <!-- <phase>process-classes</phase> -->
+                        <phase>compile</phase>
+                        <configuration>
+                            <!-- Specific configuration for the messages report -->
+                            <doclet>multex.tool.ExceptionMessagesDoclet</doclet>
+                            <docletArtifact>
+                                <groupId>de.tfh-berlin.knabe</groupId>
+                                <artifactId>multex</artifactId>
+                                <version>${multexVersion}</version>
+                            </docletArtifact>
+                            <useStandardDocletOptions>false</useStandardDocletOptions>
+                            <show>private</show>
+                            <verbose>false</verbose>
+                            <debug>false</debug>
+                            <additionalparam>
+                                -out
+                                ${project.build.directory}/classes/${messageTextFile}
+                            </additionalparam>
+                            <!-- For the project-reports page -->
+                            <name>ExceptionTexts</name>
+                            <description>Extraction of Exception Message Texts from Source
+                                Code
+                            </description>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <!-- Java Code Coverage analyzer. See https://www.petrikainulainen.net/programming/maven/creating-code-coverage-reports-for-unit-and-integration-tests-with-the-jacoco-maven-plugin/ -->
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>0.7.9</version>
+                <executions>
+                    <!-- Prepares the property pointing to the JaCoCo runtime agent, which
+                        is passed as VM argument, when the Maven Surefire plugin is executed. -->
+                    <execution>
+                        <id>pre-unit-test</id>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                        <configuration>
+                            <!-- Sets the path to the file which contains the execution data. -->
+                            <destFile>${project.build.directory}/coverage-reports/jacoco-ut.exec</destFile>
+                            <!-- Sets the name of the property containing the settings for the
+                                JaCoCo runtime agent. -->
+                            <propertyName>surefireArgLine</propertyName>
+                        </configuration>
+                    </execution>
+                    <!-- Ensures that the code coverage report for unit tests is created
+                        after unit tests have been run. -->
+                    <execution>
+                        <id>post-unit-test</id>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                        <configuration>
+                            <!-- Sets the path to the file which contains the collected execution
+                                data. -->
+                            <dataFile>${project.build.directory}/coverage-reports/jacoco-ut.exec</dataFile>
+                            <!-- Sets the output directory for the code coverage report. -->
+                            <outputDirectory>${project.reporting.outputDirectory}/jacoco-ut</outputDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <!-- Sets the VM argument line for test runs in Surefire, created by
+                        the upper prepare-agent goal of the jacoco-maven-plugin. -->
+                    <argLine>${surefireArgLine}</argLine>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 
