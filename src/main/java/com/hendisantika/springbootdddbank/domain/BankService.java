@@ -1,5 +1,6 @@
 package com.hendisantika.springbootdddbank.domain;
 
+import multex.Exc;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -96,5 +97,12 @@ public class BankService {
             throw create(ClientNotFoundExc.class, username);
         }
         return optional.get();
+    }
+
+    /**
+     * There is no Client object for the username {0}.
+     */
+    @SuppressWarnings("serial")
+    public static class ClientNotFoundExc extends Exc {
     }
 }
