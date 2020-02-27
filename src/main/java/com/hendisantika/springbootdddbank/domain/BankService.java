@@ -3,6 +3,9 @@ package com.hendisantika.springbootdddbank.domain;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.util.regex.Pattern;
+
 /**
  * Created by IntelliJ IDEA.
  * Project : springboot-ddd-bank
@@ -24,5 +27,24 @@ public class BankService {
     public BankService(final ClientRepository clientRepository, final AccountAccessRepository accountAccessRepository) {
         this.clientRepository = clientRepository;
         this.accountAccessRepository = accountAccessRepository;
+    }
+
+    /**
+     * Command: Creates a new bank {@link Client} with given username and birthDate
+     * and saves it giving it a unique ID.
+     *
+     * @param username  the unique username of the new client. It must match the regular
+     *                  expression <code>[a-z_A-Z][a-z_A-Z0-9]{0,30}</code>.
+     * @param birthDate the birth date of the new client, must not be null
+     * @return the saved new {@link Client} with the ID set.
+     * @throws UsernameExc the username does not match the required pattern.
+     */
+    public Client createClient(final String username, final LocalDate birthDate) {
+        final Pattern pattern = Pattern.compile("[a-z_A-Z][a-z_A-Z0-9]{0,30}");
+        if (!pattern.matcher(username).matches()) {
+            throw create(UsernameExc.class, username);
+        }
+        final Client client = clientRepository.save(new Client(username, birthDate));
+        return client;
     }
 }
