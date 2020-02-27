@@ -55,4 +55,24 @@ public class BankService {
     @SuppressWarnings("serial")
     public static class UsernameExc extends multex.Exc {
     }
+
+    /**
+     * Command: Deletes the given {@link Client}. The {@link Client} looses all
+     * manager account accesses to accounts, where he was manager.
+     *
+     * @param client the {@link Client} to be deleted
+     * @throws DeleteExc Client has accounts, where he is the owner. So he cannot yet be
+     *                   deleted.
+     */
+    public void deleteClient(final Client client) {
+        final List<AccountAccess> managedAccounts = accountAccessRepository.findManagedAccountsOf(client, true);
+        for (final AccountAccess accountAccess : managedAccounts) {
+            if (accountAccess.isOwner()) {
+                throw create(DeleteExc.class, client, accountAccess.getAccount());
+            } else {
+                accountAccessRepository.delete(accountAccess);
+            }
+        }
+        clientRepository.delete(client);
+    }
 }
