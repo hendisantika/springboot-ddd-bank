@@ -75,4 +75,11 @@ public class BankService {
         }
         clientRepository.delete(client);
     }
+
+    /**
+     * Cannot delete client {0}, Still owns account {1}.
+     */
+    @SuppressWarnings("serial")
+    public static class DeleteExc extends multex.Exc {
+    }
 }
