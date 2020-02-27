@@ -47,4 +47,12 @@ public class BankService {
         final Client client = clientRepository.save(new Client(username, birthDate));
         return client;
     }
+
+    /**
+     * Illegal username "{0}". Must have 1..31 characters, start with a letter and
+     * contain only english letters, underscores, and decimal digits.
+     */
+    @SuppressWarnings("serial")
+    public static class UsernameExc extends multex.Exc {
+    }
 }
