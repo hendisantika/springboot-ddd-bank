@@ -82,4 +82,19 @@ public class BankService {
     @SuppressWarnings("serial")
     public static class DeleteExc extends multex.Exc {
     }
+
+    /**
+     * Query: Finds the client with the given username.
+     *
+     * @param username the unique username to be used for locating the {@link Client}
+     * @return the {@link Client} with the given username
+     * @throws ClientNotFoundExc There is no client object with the given username.
+     */
+    public Client findClient(final String username) throws ClientNotFoundExc {
+        final Optional<Client> optional = clientRepository.find(username);
+        if (!optional.isPresent()) {
+            throw create(ClientNotFoundExc.class, username);
+        }
+        return optional.get();
+    }
 }
