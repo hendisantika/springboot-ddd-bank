@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Created by IntelliJ IDEA.
@@ -129,4 +131,19 @@ public class BankService {
         return clientRepository.findAllBornFrom(fromBirth);
     }
 
+    /**
+     * Query: Finds all clients of the bank, who own or manage an account with the
+     * given mimimum balance.
+     *
+     * @param minBalance the minimum balance of considered {@link Account}s
+     * @return all {@link Client}s with {@link Account} with the given mimimum
+     * balance. They are ordered by their descending account balance and
+     * secondly by their descending IDs.
+     */
+    public List<Client> findRichClients(final Amount minBalance) {
+        final List<AccountAccess> fullAccounts = accountAccessRepository.findFullAccounts(minBalance);
+        final Stream<Client> richClients = fullAccounts.stream().map(accountAccess -> accountAccess.getClient())
+                .distinct();
+        return richClients.collect(Collectors.toList());
+    }
 }
