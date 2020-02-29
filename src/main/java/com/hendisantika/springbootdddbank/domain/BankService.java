@@ -117,4 +117,16 @@ public class BankService {
         return clientRepository.findAll();
     }
 
+    /**
+     * Query: Finds all clients of the bank, who are born at the given date or
+     * later.
+     *
+     * @param fromBirth the earliest birth date from which {@link Client}s are considered
+     * @return all young {@link Client}s ordered by their ascending age and secondly
+     * by their descending IDs.
+     */
+    public List<Client> findYoungClients(final LocalDate fromBirth) {
+        return clientRepository.findAllBornFrom(fromBirth);
+    }
+
 }
