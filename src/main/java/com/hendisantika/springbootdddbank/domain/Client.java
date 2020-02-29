@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import java.time.LocalDate;
 
 /**

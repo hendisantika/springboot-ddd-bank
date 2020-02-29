@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.regex.Pattern;
 
 /**
@@ -106,5 +107,14 @@ public class BankService {
     public static class ClientNotFoundExc extends Exc {
     }
 
+    /**
+     * Query: Finds all clients of the bank.
+     *
+     * @return all {@link Client}s of the bank ordered by their descending IDs, that
+     * means the newest come first.
+     */
+    public List<Client> findAllClients() {
+        return clientRepository.findAll();
+    }
 
 }
