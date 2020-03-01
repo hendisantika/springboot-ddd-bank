@@ -1,5 +1,9 @@
 package com.hendisantika.springbootdddbank.infrastructure;
 
+import com.hendisantika.springbootdddbank.infrastructure.imports.ImportedAccountAccessJpaRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 /**
  * Created by IntelliJ IDEA.
  * Project : springboot-ddd-bank
@@ -9,5 +13,13 @@ package com.hendisantika.springbootdddbank.infrastructure;
  * Date: 01/03/20
  * Time: 06.55
  */
-public class AccountAccessJpaRepository {
+@Service
+public class AccountAccessJpaRepository implements AccountAccessRepository {
+
+    private final ImportedAccountAccessJpaRepository impl;
+
+    @Autowired
+    public AccountAccessJpaRepository(final ImportedAccountAccessJpaRepository impl) {
+        this.impl = impl;
+    }
 }
