@@ -10,4 +10,9 @@ package com.hendisantika.springbootdddbank.domain.imports;
  * Time: 06.55
  */
 public interface ClientRepository {
+    /**
+     * Deletes all Clients. Useful for test scenarios in order to start with an
+     * empty {@link Client} set.
+     */
+    void deleteAll();
 }
