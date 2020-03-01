@@ -26,4 +26,12 @@ public interface AccountAccessRepository {
      * @return the saved instance
      */
     AccountAccess save(AccountAccess accountAccess);
+
+    /**
+     * Deletes the given {@link AccountAccess} object.
+     *
+     * @param accountAccess the AccountAccess object to be deleted
+     */
+    void delete(AccountAccess accountAccess);
+
 }
