@@ -23,4 +23,10 @@ public interface AccountRepository {
      * @throws IllegalArgumentException acccountNo is null or empty
      */
     Optional<Account> find(AccountNo acccountNo);
+
+    /**
+     * Deletes all Accounts. Useful for test scenarios in order to start with an
+     * empty account set.
+     */
+    void deleteAll();
 }
