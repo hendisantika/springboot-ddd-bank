@@ -1,6 +1,7 @@
 package com.hendisantika.springbootdddbank.infrastructure;
 
 import com.hendisantika.springbootdddbank.domain.AccountAccess;
+import com.hendisantika.springbootdddbank.domain.Amount;
 import com.hendisantika.springbootdddbank.domain.Client;
 import com.hendisantika.springbootdddbank.infrastructure.imports.ImportedAccountAccessJpaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,5 +44,10 @@ public class AccountAccessJpaRepository implements AccountAccessRepository {
     @Override
     public List<AccountAccess> findManagedAccountsOf(Client client, boolean asOwner) {
         return impl.findAllByClientAndIsOwnerGreaterThanEqualOrderByIdDesc(client, asOwner);
+    }
+
+    @Override
+    public List<AccountAccess> findFullAccounts(final Amount minBalance) {
+        return impl.findAllByAccountBalanceCentsGreaterThanEqualOrderByAccountBalanceCentsDescClientIdDesc(minBalance.getCents());
     }
 }
