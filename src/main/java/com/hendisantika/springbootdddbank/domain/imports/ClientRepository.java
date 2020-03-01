@@ -2,6 +2,7 @@ package com.hendisantika.springbootdddbank.domain.imports;
 
 import com.hendisantika.springbootdddbank.domain.Client;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -52,4 +53,11 @@ public interface ClientRepository {
      * @throws IllegalArgumentException username is null or empty
      */
     Optional<Client> find(String username);
+
+    /**
+     * Finds all {@link Client}s.
+     *
+     * @return all clients ordered by descending IDs
+     */
+    List<Client> findAll();
 }
