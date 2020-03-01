@@ -1,5 +1,6 @@
 package com.hendisantika.springbootdddbank.infrastructure;
 
+import com.hendisantika.springbootdddbank.domain.AccountAccess;
 import com.hendisantika.springbootdddbank.infrastructure.imports.ImportedAccountAccessJpaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,5 +26,9 @@ public class AccountAccessJpaRepository implements AccountAccessRepository {
 
     public void deleteAll() {
         impl.deleteAll();
+    }
+
+    public AccountAccess save(final AccountAccess accountAccess) {
+        return impl.save(accountAccess);
     }
 }
