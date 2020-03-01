@@ -1,10 +1,12 @@
 package com.hendisantika.springbootdddbank.domain.imports;
 
+import com.hendisantika.springbootdddbank.domain.Account;
 import com.hendisantika.springbootdddbank.domain.AccountAccess;
 import com.hendisantika.springbootdddbank.domain.Amount;
 import com.hendisantika.springbootdddbank.domain.Client;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Created by IntelliJ IDEA.
@@ -58,5 +60,13 @@ public interface AccountAccessRepository {
      */
     List<AccountAccess> findFullAccounts(final Amount minBalance);
 
-
+    /**
+     * Finds the access rights of the client for the account.
+     *
+     * @param client  a Client of the bank
+     * @param account an account, which the clients want to use
+     * @return {@link AccountAccess} object for the given client and account, if
+     * existing.
+     */
+    Optional<AccountAccess> find(Client client, Account account);
 }
