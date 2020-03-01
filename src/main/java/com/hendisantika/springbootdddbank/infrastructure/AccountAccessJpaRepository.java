@@ -1,5 +1,6 @@
 package com.hendisantika.springbootdddbank.infrastructure;
 
+import com.hendisantika.springbootdddbank.domain.Account;
 import com.hendisantika.springbootdddbank.domain.AccountAccess;
 import com.hendisantika.springbootdddbank.domain.Amount;
 import com.hendisantika.springbootdddbank.domain.Client;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Created by IntelliJ IDEA.
@@ -49,5 +51,10 @@ public class AccountAccessJpaRepository implements AccountAccessRepository {
     @Override
     public List<AccountAccess> findFullAccounts(final Amount minBalance) {
         return impl.findAllByAccountBalanceCentsGreaterThanEqualOrderByAccountBalanceCentsDescClientIdDesc(minBalance.getCents());
+    }
+
+    @Override
+    public Optional<AccountAccess> find(final Client client, final Account account) {
+        return impl.findOneByClientAndAccount(client, account);
     }
 }
