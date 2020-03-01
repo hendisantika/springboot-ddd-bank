@@ -22,4 +22,8 @@ public class AccountAccessJpaRepository implements AccountAccessRepository {
     public AccountAccessJpaRepository(final ImportedAccountAccessJpaRepository impl) {
         this.impl = impl;
     }
+
+    public void deleteAll() {
+        impl.deleteAll();
+    }
 }
