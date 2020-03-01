@@ -29,4 +29,12 @@ public interface AccountRepository {
      * empty account set.
      */
     void deleteAll();
+
+    /**
+     * Saves the account giving it a unique, higher account number (accountNo).
+     *
+     * @param account the {@link Account} to be saved
+     * @return the modified instance
+     */
+    Account save(Account account);
 }
