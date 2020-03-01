@@ -1,6 +1,9 @@
 package com.hendisantika.springbootdddbank.domain.imports;
 
 import com.hendisantika.springbootdddbank.domain.AccountAccess;
+import com.hendisantika.springbootdddbank.domain.Client;
+
+import java.util.List;
 
 /**
  * Created by IntelliJ IDEA.
@@ -33,5 +36,15 @@ public interface AccountAccessRepository {
      * @param accountAccess the AccountAccess object to be deleted
      */
     void delete(AccountAccess accountAccess);
+
+    /**
+     * Finds all {@link AccountAccess} objects, which the given client may manage.
+     *
+     * @param client  the Client, whose managed accounts are searched.
+     * @param asOwner if true returns only {@link AccountAccess} objects, where the
+     *                {@link Client} is owner.
+     * @return accesss objects to all accounts managed by the given {@link Client}
+     */
+    List<AccountAccess> findManagedAccountsOf(Client client, boolean asOwner);
 
 }
