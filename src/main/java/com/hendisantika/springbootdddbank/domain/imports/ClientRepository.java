@@ -2,6 +2,8 @@ package com.hendisantika.springbootdddbank.domain.imports;
 
 import com.hendisantika.springbootdddbank.domain.Client;
 
+import java.util.Optional;
+
 /**
  * Created by IntelliJ IDEA.
  * Project : springboot-ddd-bank
@@ -32,4 +34,13 @@ public interface ClientRepository {
      * @param client the {@link Client} to be deleted
      */
     void delete(Client client);
+
+    /**
+     * Searches the client object by its ID.
+     *
+     * @param id the unique ID of the searched client object
+     * @return the {@link Client} object with the given id, if existing.
+     * @throws IllegalArgumentException id is null
+     */
+    Optional<Client> find(Long id);
 }
