@@ -1,5 +1,7 @@
 package com.hendisantika.springbootdddbank.domain.imports;
 
+import com.hendisantika.springbootdddbank.domain.AccountAccess;
+
 /**
  * Created by IntelliJ IDEA.
  * Project : springboot-ddd-bank
@@ -15,4 +17,13 @@ public interface AccountAccessRepository {
      * {@link Account}s must be deleted before.
      */
     void deleteAll();
+
+    /**
+     * Saves the passed object. Linked {@link Client} and {@link Account} must be
+     * saved before.
+     *
+     * @param accountAccess the {@link AccountAccess} object to be saved
+     * @return the saved instance
+     */
+    AccountAccess save(AccountAccess accountAccess);
 }
