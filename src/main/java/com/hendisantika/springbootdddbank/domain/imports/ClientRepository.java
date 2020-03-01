@@ -2,6 +2,7 @@ package com.hendisantika.springbootdddbank.domain.imports;
 
 import com.hendisantika.springbootdddbank.domain.Client;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -60,4 +61,13 @@ public interface ClientRepository {
      * @return all clients ordered by descending IDs
      */
     List<Client> findAll();
+
+    /**
+     * Finds all {@link Client}s born at the given date or later.
+     *
+     * @param minDate the oldest birth date of clients
+     * @return the clients ordered firstly by their descending birth date, and secondly by descending
+     * IDs.
+     */
+    List<Client> findAllBornFrom(LocalDate minDate);
 }
