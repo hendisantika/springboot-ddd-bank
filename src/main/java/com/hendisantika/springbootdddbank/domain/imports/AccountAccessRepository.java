@@ -1,6 +1,7 @@
 package com.hendisantika.springbootdddbank.domain.imports;
 
 import com.hendisantika.springbootdddbank.domain.AccountAccess;
+import com.hendisantika.springbootdddbank.domain.Amount;
 import com.hendisantika.springbootdddbank.domain.Client;
 
 import java.util.List;
@@ -46,5 +47,16 @@ public interface AccountAccessRepository {
      * @return accesss objects to all accounts managed by the given {@link Client}
      */
     List<AccountAccess> findManagedAccountsOf(Client client, boolean asOwner);
+
+    /**
+     * Finds accounts with a minimum balance.
+     *
+     * @param minBalance accounts with a balance equal or greater than the given minBalance
+     *                   will be included.
+     * @return access objects to the full accounts, ordered by the descending
+     * balance, secondly by descending ids of their managing clients.
+     */
+    List<AccountAccess> findFullAccounts(final Amount minBalance);
+
 
 }
