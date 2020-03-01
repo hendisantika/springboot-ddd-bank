@@ -43,4 +43,13 @@ public interface ClientRepository {
      * @throws IllegalArgumentException id is null
      */
     Optional<Client> find(Long id);
+
+    /**
+     * Searches the client object by username.
+     *
+     * @param username the unique username of the searched client
+     * @return the {@link Client} object with the given username, if existing.
+     * @throws IllegalArgumentException username is null or empty
+     */
+    Optional<Client> find(String username);
 }
