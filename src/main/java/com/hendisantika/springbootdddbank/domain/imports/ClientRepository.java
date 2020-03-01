@@ -25,4 +25,11 @@ public interface ClientRepository {
      * @return the modified instance
      */
     Client save(Client client);
+
+    /**
+     * Deletes the given client.
+     *
+     * @param client the {@link Client} to be deleted
+     */
+    void delete(Client client);
 }
