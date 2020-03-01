@@ -31,4 +31,9 @@ public class AccountAccessJpaRepository implements AccountAccessRepository {
     public AccountAccess save(final AccountAccess accountAccess) {
         return impl.save(accountAccess);
     }
+
+    @Override
+    public void delete(AccountAccess accountAccess) {
+        impl.delete(accountAccess);
+    }
 }
