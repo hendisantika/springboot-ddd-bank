@@ -32,4 +32,8 @@ public class ClientJpaRepository implements ClientRepository {
     public Client save(final Client client) {
         return impl.save(client);
     }
+
+    public void delete(Client client) {
+        impl.delete(client);
+    }
 }
