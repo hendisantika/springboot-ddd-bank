@@ -21,7 +21,7 @@ import java.util.Optional;
  * Time: 06.55
  */
 @Service
-public class AccountAccessJpaRepository implements AccountAccessRepository {
+public class AccountAccessJpaRepository implements AccountJpaRepository {
 
     private final ImportedAccountAccessJpaRepository impl;
 
