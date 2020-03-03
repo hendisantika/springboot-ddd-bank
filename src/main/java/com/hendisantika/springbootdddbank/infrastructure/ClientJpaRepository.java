@@ -6,6 +6,7 @@ import com.hendisantika.springbootdddbank.infrastructure.imports.ImportedClientJ
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -54,4 +55,7 @@ public class ClientJpaRepository implements ClientRepository {
         return impl.findAllByOrderByIdDesc();
     }
 
+    public List<Client> findAllBornFrom(final LocalDate minDate) {
+        return impl.findAllByBirthDateGreaterThanEqualOrderByBirthDateDescIdDesc(minDate);
+    }
 }
