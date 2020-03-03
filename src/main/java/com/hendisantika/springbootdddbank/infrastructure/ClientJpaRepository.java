@@ -24,4 +24,7 @@ public class ClientJpaRepository implements ClientRepository {
         this.impl = impl;
     }
 
+    public void deleteAll() {
+        impl.deleteAll();
+    }
 }
