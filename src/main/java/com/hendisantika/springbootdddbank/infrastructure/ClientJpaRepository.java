@@ -1,5 +1,6 @@
 package com.hendisantika.springbootdddbank.infrastructure;
 
+import com.hendisantika.springbootdddbank.domain.Client;
 import com.hendisantika.springbootdddbank.domain.imports.ClientRepository;
 import com.hendisantika.springbootdddbank.infrastructure.imports.ImportedClientJpaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,5 +27,9 @@ public class ClientJpaRepository implements ClientRepository {
 
     public void deleteAll() {
         impl.deleteAll();
+    }
+
+    public Client save(final Client client) {
+        return impl.save(client);
     }
 }
