@@ -36,4 +36,9 @@ public class AccountJpaRepository implements AccountRepository {
     public void deleteAll() {
         impl.deleteAll();
     }
+
+
+    public Account save(final Account account) {
+        return impl.save(account);
+    }
 }
