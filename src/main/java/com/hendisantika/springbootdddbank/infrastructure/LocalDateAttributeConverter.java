@@ -16,4 +16,8 @@ import java.util.Date;
  */
 @Converter(autoApply = true)
 public class LocalDateAttributeConverter implements AttributeConverter<LocalDate, Date> {
+    @Override
+    public Date convertToDatabaseColumn(final LocalDate locDate) {
+        return (locDate == null ? null : Date.valueOf(locDate));
+    }
 }
