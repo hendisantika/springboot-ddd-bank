@@ -1,9 +1,13 @@
 package com.hendisantika.springbootdddbank.infrastructure;
 
+import com.hendisantika.springbootdddbank.domain.Account;
+import com.hendisantika.springbootdddbank.domain.AccountNo;
 import com.hendisantika.springbootdddbank.domain.imports.AccountRepository;
 import com.hendisantika.springbootdddbank.infrastructure.imports.ImportedAccountJpaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 /**
  * Created by IntelliJ IDEA.
@@ -22,5 +26,10 @@ public class AccountJpaRepository implements AccountRepository {
     @Autowired
     public AccountJpaRepository(final ImportedAccountJpaRepository impl) {
         this.impl = impl;
+    }
+
+    @Override
+    public Optional<Account> find(AccountNo acccountNo) {
+        return impl.findOneById(acccountNo.toLong());
     }
 }
