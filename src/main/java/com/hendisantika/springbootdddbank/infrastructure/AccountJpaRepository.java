@@ -32,4 +32,8 @@ public class AccountJpaRepository implements AccountRepository {
     public Optional<Account> find(AccountNo acccountNo) {
         return impl.findOneById(acccountNo.toLong());
     }
+
+    public void deleteAll() {
+        impl.deleteAll();
+    }
 }
