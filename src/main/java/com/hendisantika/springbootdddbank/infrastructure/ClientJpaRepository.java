@@ -6,6 +6,8 @@ import com.hendisantika.springbootdddbank.infrastructure.imports.ImportedClientJ
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 /**
  * Created by IntelliJ IDEA.
  * Project : springboot-ddd-bank
@@ -36,4 +38,10 @@ public class ClientJpaRepository implements ClientRepository {
     public void delete(Client client) {
         impl.delete(client);
     }
+
+    @Override
+    public Optional<Client> find(Long id) {
+        return impl.findOneById(id);
+    }
+
 }
