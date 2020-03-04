@@ -6,6 +6,9 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * Created by IntelliJ IDEA.
  * Project : springboot-ddd-bank
@@ -47,4 +50,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and().csrf().disable()
         ;
     }
+
+    private static final List<String> predefinedUsernames = Arrays.asList("bank", "naruto", "sakura", "sasuke",
+            "kakashi");
+
 }
