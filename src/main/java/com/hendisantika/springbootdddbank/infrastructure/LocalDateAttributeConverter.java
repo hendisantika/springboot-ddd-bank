@@ -2,8 +2,8 @@ package com.hendisantika.springbootdddbank.infrastructure;
 
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;
+import java.sql.Date;
 import java.time.LocalDate;
-import java.util.Date;
 
 /**
  * Created by IntelliJ IDEA.
