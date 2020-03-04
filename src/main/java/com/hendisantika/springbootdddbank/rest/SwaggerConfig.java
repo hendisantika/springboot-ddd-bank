@@ -69,4 +69,14 @@ public class SwaggerConfig {
                 Collections.emptyList()
         );
     }
+
+    private String _clientUsernames() {
+        final StringBuilder result = new StringBuilder();
+        for (final String username : webSecurityConfig.predefinedUsernames()) {
+            result.append(", ");
+            result.append(username);
+        }
+        result.replace(0, ", bank, ".length(), "");
+        return result.toString();
+    }
 }
