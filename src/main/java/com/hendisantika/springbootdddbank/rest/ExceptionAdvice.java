@@ -1,10 +1,12 @@
 package com.hendisantika.springbootdddbank.rest;
 
+import com.hendisantika.springbootdddbank.domain.BankService;
 import com.hendisantika.springbootdddbank.domain.Client;
 import multex.Msg;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.hateoas.mediatype.vnderrors.VndErrors;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -84,4 +86,30 @@ public class ExceptionAdvice {
     final String restInterfacePackagePrefix = _computePackagePrefix(ApplicationController.ClientCreateWithIdExc.class);
     final String domainPackagePrefix = _computePackagePrefix(Client.NotOwnerExc.class);
 
+    /**
+     * Converts the given exception to the most suiting HTTP response status.
+     *
+     * @param exc the exception to be converted
+     * @return one of HttpStatus.NOT_FOUND, HttpStatus.FORBIDDEN,
+     * HttpStatus.BAD_REQUEST, HttpStatus.INTERNAL_SERVER_ERROR
+     */
+    HttpStatus exceptionToStatus(final Exception exc) {
+        if (exc instanceof BankService.ClientNotFoundExc) {
+            return HttpStatus.NOT_FOUND;
+        }
+        if (exc instanceof Client.NotManagedAccountExc) {
+            return HttpStatus.NOT_FOUND;
+        }
+        if (exc instanceof Client.NotOwnerExc) {
+            return HttpStatus.FORBIDDEN;
+        }
+        if (exc instanceof Client.WithoutRightExc) {
+            return HttpStatus.FORBIDDEN;
+        }
+        final String excClassName = exc.getClass().getName();
+        if (excClassName.startsWith(restInterfacePackagePrefix) || excClassName.startsWith(domainPackagePrefix)) {
+            return HttpStatus.BAD_REQUEST;
+        }
+        return HttpStatus.INTERNAL_SERVER_ERROR;
+    }
 }
