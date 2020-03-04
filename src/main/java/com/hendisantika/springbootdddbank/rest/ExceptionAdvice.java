@@ -112,4 +112,18 @@ public class ExceptionAdvice {
         }
         return HttpStatus.INTERNAL_SERVER_ERROR;
     }
+
+    /**
+     * Returns the name prefix of all classes in the package of the given exception
+     * class.
+     *
+     * @param excClass a Class object for a class in a package
+     * @return if the given class is modeled in the package
+     * <code>tld.mysoftware.domain</code>, the result will be
+     * <code>tld.mysoftware.domain.</code> with trailing dot.
+     */
+    String _computePackagePrefix(final Class<?> excClass) {
+        final String packageName = excClass.getPackage().getName();
+        return packageName + '.';
+    }
 }
