@@ -1,5 +1,6 @@
 package com.hendisantika.springbootdddbank.rest;
 
+import com.hendisantika.springbootdddbank.domain.Client;
 import multex.Msg;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -79,5 +80,8 @@ public class ExceptionAdvice {
         response.setStatus(exceptionToStatus(ex).value());
         return new VndErrors("error", clientMesagesString);
     }
+
+    final String restInterfacePackagePrefix = _computePackagePrefix(ApplicationController.ClientCreateWithIdExc.class);
+    final String domainPackagePrefix = _computePackagePrefix(Client.NotOwnerExc.class);
 
 }
