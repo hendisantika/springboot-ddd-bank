@@ -73,4 +73,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         }
     }
 
+    public List<String> predefinedUsernames() {
+        return predefinedUsernames;
+    }
+
 }
