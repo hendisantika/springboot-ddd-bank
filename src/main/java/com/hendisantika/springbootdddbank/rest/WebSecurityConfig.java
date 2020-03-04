@@ -1,7 +1,10 @@
 package com.hendisantika.springbootdddbank.rest;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.authentication.configurers.provisioning.InMemoryUserDetailsManagerConfigurer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -53,5 +56,21 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private static final List<String> predefinedUsernames = Arrays.asList("bank", "naruto", "sakura", "sasuke",
             "kakashi");
+
+    /**
+     * Configures the {@link #predefinedUsernames} as known users with their password equal to the user name.
+     *
+     * @param auth a SecurityBuilder injected by Spring, used to create an AuthenticationManager
+     * @throws Exception if an error occurs when configuring the in memory authentication
+     */
+    @Autowired
+    public void configureGlobal(final AuthenticationManagerBuilder auth) throws Exception {
+        final InMemoryUserDetailsManagerConfigurer<AuthenticationManagerBuilder> inMemoryAuthentication =
+                auth.inMemoryAuthentication();
+        for (final String username : predefinedUsernames) {
+            final String role = username.equalsIgnoreCase(BANK_ROLE) ? BANK_ROLE : CLIENT_ROLE;
+            inMemoryAuthentication.withUser(username).password(username).roles(role);
+        }
+    }
 
 }
