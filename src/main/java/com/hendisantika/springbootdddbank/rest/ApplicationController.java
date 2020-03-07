@@ -298,4 +298,18 @@ public class ApplicationController {
         return new ResponseEntity<>(resultArray, HttpStatus.OK);
     }
 
+    /**
+     * Finds the Client for the username, which has been authenticated with this web
+     * request.
+     *
+     * @param request the current {@link WebRequest} as provided by Spring
+     * @return the domain entity object for the client
+     * @throws BankService.ClientNotFoundExc There is no client object with the username of the authenticated
+     *                                       user of this web request.
+     */
+    private Client _findClient(final WebRequest request) {
+        final String username = request.getRemoteUser();
+        return bankService.findClient(username);
+    }
+
 }
