@@ -11,6 +11,7 @@ package com.hendisantika.springbootdddbank.rest;
  */
 
 import com.hendisantika.springbootdddbank.domain.AccountAccess;
+import com.hendisantika.springbootdddbank.domain.AccountNo;
 import com.hendisantika.springbootdddbank.domain.Amount;
 import com.hendisantika.springbootdddbank.domain.BankService;
 import com.hendisantika.springbootdddbank.domain.Client;
@@ -187,5 +188,23 @@ public class ApplicationController {
         final AccountAccess r = client.createAccount(accountName);
         final AccountAccessResource result = new AccountAccessResource(r);
         return new ResponseEntity<>(result, HttpStatus.CREATED);
+    }
+
+    /*
+     * Resource for a coarse grained business process according to
+     * https://www.thoughtworks.com/de/insights/blog/rest-api-design-resource-
+     * modeling
+     */
+    @ApiOperation(value = "Deposits the given amount of money to the account with the given accountNo. "
+            + "This is executed as the authenticated client with his username.", authorizations = {
+            @Authorization(value = "basicAuth")})
+    @PostMapping("/client/deposit")
+    public ResponseEntity<Void> deposit(@RequestBody final DepositCommand command,
+                                        @ApiParam(hidden = true) final HttpMethod method, final WebRequest request) {
+        _print(method, request);
+        final Client client = _findClient(request);
+        final Amount amount = new Amount(command.amount);
+        client.deposit(new AccountNo(command.accountNo), amount);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
