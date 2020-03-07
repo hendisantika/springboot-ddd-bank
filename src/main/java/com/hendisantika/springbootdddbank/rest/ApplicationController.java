@@ -249,4 +249,16 @@ public class ApplicationController {
         final AccountAccessResource result = new AccountAccessResource(client.addAccountManager(account, manager));
         return new ResponseEntity<>(result, HttpStatus.CREATED);
     }
+
+    @ApiOperation(value = "Returns a report of all accounts the current user manages with columns access right " +
+            "(isOwner|manages), the balance, and the name of the account", authorizations = {
+            @Authorization(value = "basicAuth")})
+    @GetMapping("/client/account")
+    public ResponseEntity<String> accountsReport(@ApiParam(hidden = true) final HttpMethod method,
+                                                 final WebRequest request) {
+        _print(method, request);
+        final Client client = _findClient(request);
+        final String result = client.accountsReport();
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
 }
