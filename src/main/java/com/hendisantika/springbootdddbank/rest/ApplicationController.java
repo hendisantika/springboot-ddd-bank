@@ -36,6 +36,7 @@ import org.springframework.web.context.request.WebRequest;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * A Spring Web MVC controller offering a REST service for accessing all
@@ -272,5 +273,22 @@ public class ApplicationController {
      */
     private void _print(final HttpMethod method, final WebRequest request) {
         System.out.printf("%s %s %s\n", className, method, request);
+    }
+
+    /**
+     * Returns a random possible birth date for a client.
+     *
+     * @return random date ranging from 18 years before now to 100 years before now.
+     */
+    private LocalDate _randomClientBirthDate() {
+        final long nowEpochDay = LocalDate.now().toEpochDay();
+        final int minYears = 18;
+        final int maxYears = 100;
+        final long minEpochDay = nowEpochDay - 365 * maxYears;
+        final long maxEpochDay = nowEpochDay - 365 * minYears;
+        // See
+        // https://stackoverflow.com/questions/34051291/generate-a-random-localdate-with-java-time
+        final long randomEpochDay = ThreadLocalRandom.current().nextLong(minEpochDay, maxEpochDay);
+        return LocalDate.ofEpochDay(randomEpochDay);
     }
 }
