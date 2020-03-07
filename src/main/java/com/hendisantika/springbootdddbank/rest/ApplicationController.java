@@ -11,14 +11,22 @@ package com.hendisantika.springbootdddbank.rest;
  */
 
 import com.hendisantika.springbootdddbank.domain.BankService;
+import com.hendisantika.springbootdddbank.domain.Client;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.Authorization;
+import multex.Exc;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.WebRequest;
+
+import java.util.List;
 
 /**
  * A Spring Web MVC controller offering a REST service for accessing all
@@ -69,5 +77,32 @@ public class ApplicationController {
                 + "</body></html>";
         final ResponseEntity<String> responseEntity = new ResponseEntity<>(htmlContent, HttpStatus.OK);
         return responseEntity;
+    }
+
+    // For the banker role all URIs under /bank:
+
+    /*
+     * A transaction, which creates two random objects of type Client, but sometimes
+     * fails after the first one.
+     */
+    @ApiOperation(value = "Creates 2 random clients, sometimes fails after first. "
+            + "Returns a list of all clients. This is useful for populating the database "
+            + "and for checking, if the transaction rollback mechanism works.", authorizations = {
+            @Authorization(value = "basicAuth")})
+    @PostMapping("/bank/pair")
+    public ResponseEntity<ClientResource[]> create2Clients(@ApiParam(hidden = true) final HttpMethod method,
+                                                           final WebRequest request) {
+        _print(method, request);
+        final long now = System.currentTimeMillis();
+        final long number = now % 100;
+        final Client client1 = bankService.createClient("hans" + number, _randomClientBirthDate());
+        System.out.printf("Client %s created.\n", client1);
+        if (number % 3 == 0) {
+            throw new Exc("Exception after creating {0}. Should have been rolled back.", client1);
+        }
+        final Client client2 = bankService.createClient("jana" + number, _randomClientBirthDate());
+        System.out.printf("Client %s created.\n", client2);
+        final List<Client> clients = bankService.findAllClients();
+        return _clientsToResources(clients);
     }
 }
