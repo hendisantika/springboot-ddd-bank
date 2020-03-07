@@ -122,4 +122,11 @@ public class ApplicationController {
         final Client client = bankService.createClient(clientResource.username, birthLocalDate);
         return new ResponseEntity<>(new ClientResource(client), HttpStatus.CREATED);
     }
+
+    /**
+     * The client to be created with username {0} must not have an ID, but has {1}
+     */
+    @SuppressWarnings("serial")
+    public static class ClientCreateWithIdExc extends multex.Exc {
+    }
 }
