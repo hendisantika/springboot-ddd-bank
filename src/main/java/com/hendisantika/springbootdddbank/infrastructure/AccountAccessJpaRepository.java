@@ -4,6 +4,7 @@ import com.hendisantika.springbootdddbank.domain.Account;
 import com.hendisantika.springbootdddbank.domain.AccountAccess;
 import com.hendisantika.springbootdddbank.domain.Amount;
 import com.hendisantika.springbootdddbank.domain.Client;
+import com.hendisantika.springbootdddbank.domain.imports.AccountAccessRepository;
 import com.hendisantika.springbootdddbank.infrastructure.imports.ImportedAccountAccessJpaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,7 +22,7 @@ import java.util.Optional;
  * Time: 06.55
  */
 @Service
-public class AccountAccessJpaRepository implements AccountJpaRepository {
+public class AccountAccessJpaRepository implements AccountAccessRepository {
 
     private final ImportedAccountAccessJpaRepository impl;
 
