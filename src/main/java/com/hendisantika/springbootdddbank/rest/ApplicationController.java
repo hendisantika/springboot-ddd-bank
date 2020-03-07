@@ -261,4 +261,16 @@ public class ApplicationController {
         final String result = client.accountsReport();
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
+
+    /**
+     * Prints a message containing the current class name, the HTTP method, and
+     * infos about the current request.
+     *
+     * @param method  the HTTP method (GET, PUT, POST, DELETE, ...) used in a web
+     *                request
+     * @param request the web request as seen by Spring
+     */
+    private void _print(final HttpMethod method, final WebRequest request) {
+        System.out.printf("%s %s %s\n", className, method, request);
+    }
 }
