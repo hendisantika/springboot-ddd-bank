@@ -21,7 +21,9 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -128,5 +130,18 @@ public class ApplicationController {
      */
     @SuppressWarnings("serial")
     public static class ClientCreateWithIdExc extends multex.Exc {
+    }
+
+
+    @ApiOperation(value = "Delete the client with the given username.", authorizations = {
+            @Authorization(value = "basicAuth")})
+    @DeleteMapping("/bank/client/{username}")
+    public ResponseEntity<String> deleteClient(@PathVariable @ApiParam("username of client") final String username,
+                                               @ApiParam(hidden = true) final HttpMethod method,
+                                               final WebRequest request) {
+        _print(method, request);
+        final Client client = bankService.findClient(username);
+        bankService.deleteClient(client);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
