@@ -10,6 +10,7 @@ package com.hendisantika.springbootdddbank.rest;
  * Time: 21.15
  */
 
+import com.hendisantika.springbootdddbank.domain.AccountAccess;
 import com.hendisantika.springbootdddbank.domain.Amount;
 import com.hendisantika.springbootdddbank.domain.BankService;
 import com.hendisantika.springbootdddbank.domain.Client;
@@ -170,5 +171,21 @@ public class ApplicationController {
             throw new Exc("Must not provide both parameters: fromBirth and minBalance!");
         }
         return _clientsToResources(clients);
+    }
+
+    // For the client role all URIs under /client:
+
+    @ApiOperation(value = "Creates a new account for the authenticated client with his userName. "
+            + "The account gets the name, which is passed as request body.", authorizations = {
+            @Authorization(value = "basicAuth")})
+    @PostMapping("/client/account")
+    public ResponseEntity<AccountAccessResource> createAccount(@RequestBody final String accountName,
+                                                               @ApiParam(hidden = true) final HttpMethod method,
+                                                               final WebRequest request) {
+        _print(method, request);
+        final Client client = _findClient(request);
+        final AccountAccess r = client.createAccount(accountName);
+        final AccountAccessResource result = new AccountAccessResource(r);
+        return new ResponseEntity<>(result, HttpStatus.CREATED);
     }
 }
