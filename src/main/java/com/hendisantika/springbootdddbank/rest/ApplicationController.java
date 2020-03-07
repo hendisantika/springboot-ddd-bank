@@ -10,6 +10,7 @@ package com.hendisantika.springbootdddbank.rest;
  * Time: 21.15
  */
 
+import com.hendisantika.springbootdddbank.domain.Account;
 import com.hendisantika.springbootdddbank.domain.AccountAccess;
 import com.hendisantika.springbootdddbank.domain.AccountNo;
 import com.hendisantika.springbootdddbank.domain.Amount;
@@ -206,5 +207,26 @@ public class ApplicationController {
         final Amount amount = new Amount(command.amount);
         client.deposit(new AccountNo(command.accountNo), amount);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    /*
+     * Resource for a coarse grained business process according to
+     * https://www.thoughtworks.com/de/insights/blog/rest-api-design-resource-
+     * modeling
+     */
+    @ApiOperation(value = "Transfers the given amount of money from the account with the given sourceAccountNo to "
+            + "the account with the given destinationAccountNo. Requires, that the current user is the owner "
+            + "of the given source account.", authorizations = {@Authorization(value = "basicAuth")})
+    @PostMapping("/client/transfer")
+    public ResponseEntity<AccountResource> transfer(@RequestBody final TransferCommand command,
+                                                    @ApiParam(hidden = true) final HttpMethod method,
+                                                    final WebRequest request) {
+        _print(method, request);
+        final Client client = _findClient(request);
+        final Account sourceAccount = client.findMyAccount(new AccountNo(command.sourceAccountNo));
+        final Amount amount = new Amount(command.amount);
+        client.transfer(sourceAccount, new AccountNo(command.destinationAccountNo), amount);
+        final AccountResource result = new AccountResource(sourceAccount);
+        return new ResponseEntity<>(result, HttpStatus.NO_CONTENT);
     }
 }
