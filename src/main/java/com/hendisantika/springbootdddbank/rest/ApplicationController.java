@@ -229,4 +229,24 @@ public class ApplicationController {
         final AccountResource result = new AccountResource(sourceAccount);
         return new ResponseEntity<>(result, HttpStatus.NO_CONTENT);
     }
+
+    /*
+     * Resource for a coarse grained business process according to <a href=
+     * "https://www.thoughtworks.com/de/insights/blog/rest-api-design-resource-modeling"
+     * >REST API Design - Resource Modeling</a> *
+     */
+    @ApiOperation(value = "Adds the client with the given username as an account manager to the account with the "
+            + "given accountNo. Requires, that the current user is the owner of the given account.", authorizations = {
+            @Authorization(value = "basicAuth")})
+    @PostMapping("/client/manager")
+    public ResponseEntity<AccountAccessResource> addAccountManager(@RequestBody final AddAccountManagerCommand command,
+                                                                   @ApiParam(hidden = true) final HttpMethod method,
+                                                                   final WebRequest request) {
+        _print(method, request);
+        final Client client = _findClient(request);
+        final Account account = client.findMyAccount(new AccountNo(command.accountNo));
+        final Client manager = bankService.findClient(command.username);
+        final AccountAccessResource result = new AccountAccessResource(client.addAccountManager(account, manager));
+        return new ResponseEntity<>(result, HttpStatus.CREATED);
+    }
 }
