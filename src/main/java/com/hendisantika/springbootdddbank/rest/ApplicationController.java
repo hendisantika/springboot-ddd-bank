@@ -291,4 +291,11 @@ public class ApplicationController {
         final long randomEpochDay = ThreadLocalRandom.current().nextLong(minEpochDay, maxEpochDay);
         return LocalDate.ofEpochDay(randomEpochDay);
     }
+
+    /*private*/ ResponseEntity<ClientResource[]> _clientsToResources(final List<Client> clients) {
+        final Stream<ClientResource> result = clients.stream().map(ClientResource::new);
+        final ClientResource[] resultArray = result.toArray(ClientResource[]::new);
+        return new ResponseEntity<>(resultArray, HttpStatus.OK);
+    }
+
 }
