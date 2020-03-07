@@ -10,6 +10,7 @@ package com.hendisantika.springbootdddbank.rest;
  * Time: 21.15
  */
 
+import com.hendisantika.springbootdddbank.domain.Amount;
 import com.hendisantika.springbootdddbank.domain.BankService;
 import com.hendisantika.springbootdddbank.domain.Client;
 import io.swagger.annotations.ApiOperation;
@@ -26,6 +27,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.WebRequest;
 
@@ -143,5 +145,30 @@ public class ApplicationController {
         final Client client = bankService.findClient(username);
         bankService.deleteClient(client);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @ApiOperation(value = "Find clients. Omit Parameters to retrieve all clients.", authorizations = {
+            @Authorization(value = "basicAuth")})
+    @GetMapping(path = "/bank/client")
+    public ResponseEntity<ClientResource[]> findClients(
+            @ApiParam("Returns all clients born at fromBirth or later.") @RequestParam(name = "fromBirth",
+                    defaultValue = "") final String fromBirth,
+            @ApiParam("Returns all clients with an account with a balance of minBalance or more.") @RequestParam(name = "minBalance", defaultValue = "") final String minBalance,
+            @ApiParam(hidden = true) final HttpMethod method, final WebRequest request) {
+        _print(method, request);
+        final List<Client> clients;
+        if ("".equals(fromBirth) && "".equals(minBalance)) {
+            clients = bankService.findAllClients();
+        } else if ("".equals(minBalance)) { // only fromBirth given
+            final LocalDate fromBirthLocalDate = LocalDate.parse(fromBirth, Util.MEDIUM_DATE_FORMATTER);
+            clients = bankService.findYoungClients(fromBirthLocalDate);
+        } else if (fromBirth.equals("")) { // only minBalance given
+            final double minBalanceDouble = Double.parseDouble(minBalance);
+            final Amount minBalanceAmount = new Amount(minBalanceDouble);
+            clients = bankService.findRichClients(minBalanceAmount);
+        } else {
+            throw new Exc("Must not provide both parameters: fromBirth and minBalance!");
+        }
+        return _clientsToResources(clients);
     }
 }
