@@ -23,9 +23,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.WebRequest;
 
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -104,5 +106,20 @@ public class ApplicationController {
         System.out.printf("Client %s created.\n", client2);
         final List<Client> clients = bankService.findAllClients();
         return _clientsToResources(clients);
+    }
+
+    @ApiOperation(value = "Create a client from the passed client resource.", authorizations = {
+            @Authorization(value = "basicAuth")})
+    @PostMapping("/bank/client")
+    public ResponseEntity<ClientResource> createClient(@RequestBody final ClientResource clientResource,
+                                                       @ApiParam(hidden = true) final HttpMethod method,
+                                                       final WebRequest request) {
+        _print(method, request);
+        if (clientResource.id != null) {
+            throw create(ClientCreateWithIdExc.class, clientResource.username, clientResource.id);
+        }
+        final LocalDate birthLocalDate = LocalDate.parse(clientResource.birthDate, Util.MEDIUM_DATE_FORMATTER);
+        final Client client = bankService.createClient(clientResource.username, birthLocalDate);
+        return new ResponseEntity<>(new ClientResource(client), HttpStatus.CREATED);
     }
 }
