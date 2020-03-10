@@ -75,3 +75,13 @@ This process is excluded from m2e lifecycle mapping in the `pom.xml`.
   e.g. JPA Criteria API, as the interface-based implementation of Spring Data
   is confusing to beginners.
 - Implementation of real unit tests with mock implementations of the repository interfaces.
+## References and Sources
+- [Detailed example text about DDD](https://www.mirkosertic.de/blog/2013/04/domain-driven-design-example/)
+- [The DDD Sample project](https://github.com/citerus/dddsample-core), from which are taken some inspirations
+- [The Ports and Adapters Pattern](http://alistair.cockburn.us/Hexagonal+architecture)
+- [Can DDD be Adequately Implemented Without DI and AOP?](https://www.infoq.com/news/2008/02/ddd-di-aop)
+- [Spring Boot](https://spring.io/guides/gs/spring-boot/)
+- [Spring Dependency Injection](http://projects.spring.io/spring-framework/)
+- [Spring Data JPA](https://spring.io/guides/gs/accessing-data-jpa/)
+- [Spring Data JPA Query Methods](http://docs.spring.io/spring-data/jpa/docs/current/reference/html/#jpa.query-methods)
+- This application implements my knowledge about layering and data access at a given point of time. Previous versions were in a 3-layer form in german under [Bank3Tier - Bankanwendung in 3 Schichten](http://public.beuth-hochschule.de/~knabe/java/bank3tier/).
