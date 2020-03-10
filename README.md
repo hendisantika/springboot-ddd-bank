@@ -56,3 +56,22 @@ You can run the application (a REST server) in your IDE by running class `de.beu
 - Tests are run against an empty in-memory Derby database. This is configured in file [src/test/resources/application.properties](src/test/resources/application.properties)
 - Generation of a test coverage report by the [JaCoCo Maven plugin](http://www.eclemma.org/jacoco/trunk/doc/maven.html) into [target/site/jacoco-ut/index.html](file:target/site/jacoco-ut/index.html).
 - Simple Spring Security with a fixed number of predefined users (1 bank, and 4 clients).
+### Where are the exception message texts?
+In the file `MessageText.properties`. The editable original with some fixed message texts is in `src/main/resources/`.
+By Maven phase `compile` this file is copied to `target/classes/`.
+During the following phase `process-classes` the exception message texts are extracted from the JavaDoc comments of all exceptions under `src/main/java/`
+by the  `ExceptionMessagesDoclet`  as configured for the `maven-javadoc-plugin`. They are appended to the message text file in `target/classes/`.
+This process is excluded from m2e lifecycle mapping in the `pom.xml`.
+
+
+## Plans
+
+- Make `Amount` a better value object by freezing its attributes. Seems, that for this goal Hibernate has to be used instead of JPA.
+- Nice to have: Avoid own ID of `AccountAccess`, because this class models an m:n association between `Client` and `Account`.
+  There should not be a possibility for several links between a client and an account.
+  This would require the usage of `client.id` and `account.id` as a composite ID for `AccountAccess`.
+  Not so easy, see [JPA: How to associate entities with relationship attributes?](http://stackoverflow.com/questions/18739334/jpa-how-to-associate-entities-with-relationship-attributes)
+- Implement another kind of persistence interface beside Spring Data JPA,
+  e.g. JPA Criteria API, as the interface-based implementation of Spring Data
+  is confusing to beginners.
+- Implementation of real unit tests with mock implementations of the repository interfaces.
