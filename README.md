@@ -20,3 +20,11 @@ This project uses
 - JUnit 4
 - The Exception Handling and Reporting Framework MulTEx
 
+Detailed version indications you can find in the file `pom.xml`.
+
+By  `mvn clean test`   all necessary libraries will be fetched, the project will be compiled, exception message texts will be collected and the test suite will be executed.
+
+After this is working you can import the Maven project into your Java IDE
+(Spring Tool Suite is recommended, as AspectJ weaving is needed for the compile phase).
+
+You can run the application (a REST server) in your IDE by running class `de.beuth.knabe.spring_ddd_bank.Application` or on the command line after `mvn package` by `java -jar target/spring-ddd-bank-0.1-SNAPSHOT.jar`. In the last lines of the log you will see the number of the port (usually 8080), on which the server will listen. You can stop it by typing &lt;Ctrl/c&gt;.
