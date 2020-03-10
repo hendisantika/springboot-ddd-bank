@@ -2,6 +2,8 @@ package com.hendisantika.springbootdddbank.domain;
 
 import javax.persistence.Embeddable;
 
+import static multex.MultexUtil.create;
+
 /**
  * Created by IntelliJ IDEA.
  * Project : springboot-ddd-bank
