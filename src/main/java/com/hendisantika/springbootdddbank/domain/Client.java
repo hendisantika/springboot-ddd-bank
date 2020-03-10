@@ -1,6 +1,8 @@
 package com.hendisantika.springbootdddbank.domain;
 
 import com.hendisantika.springbootdddbank.domain.base.EntityBase;
+import com.hendisantika.springbootdddbank.domain.imports.AccountAccessRepository;
+import com.hendisantika.springbootdddbank.domain.imports.AccountRepository;
 import multex.Exc;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
@@ -8,6 +10,10 @@ import org.springframework.beans.factory.annotation.Configurable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import java.time.LocalDate;
+import java.util.List;
+import java.util.Optional;
+
+import static multex.MultexUtil.create;
 
 /**
  * Created by IntelliJ IDEA.
@@ -22,10 +28,13 @@ import java.time.LocalDate;
 @Configurable
 public class Client extends EntityBase<Client> {
 
+    @Column(unique = true, nullable = false)
     private String username;
     private LocalDate birthDate;
+
     @Autowired
     private transient AccountAccessRepository accountAccessRepository;
+
     @Autowired
     private transient AccountRepository accountRepository;
 
@@ -54,7 +63,6 @@ public class Client extends EntityBase<Client> {
      *
      * @return the unique username of this {@link Client}
      */
-    @Column(unique = true, nullable = false)
     public String getUsername() {
         return username;
     }
