@@ -37,6 +37,9 @@ import org.springframework.web.context.request.WebRequest;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.stream.Stream;
+
+import static multex.MultexUtil.create;
 
 /**
  * A Spring Web MVC controller offering a REST service for accessing all
