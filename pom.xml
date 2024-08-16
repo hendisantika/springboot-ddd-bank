@@ -16,7 +16,7 @@
 
     <properties>
         <java.version>21</java.version>
-        <aspectj.version>1.8.9</aspectj.version>
+        <aspectj.version>1.9.22.1</aspectj.version>
         <derby.version>10.17.1.0</derby.version>
         <multexVersion>8.3</multexVersion>
         <swagger.version>3.0.0</swagger.version>
