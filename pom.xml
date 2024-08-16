@@ -200,7 +200,7 @@
                 <!-- Java Code Coverage analyzer. See https://www.petrikainulainen.net/programming/maven/creating-code-coverage-reports-for-unit-and-integration-tests-with-the-jacoco-maven-plugin/ -->
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
-                <version>0.7.9</version>
+                <version>0.8.12</version>
                 <executions>
                     <!-- Prepares the property pointing to the JaCoCo runtime agent, which
                         is passed as VM argument, when the Maven Surefire plugin is executed. -->
